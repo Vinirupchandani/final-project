@@ -4,13 +4,14 @@
 **Team / author:** [Names]  
 **Repository:** https://github.com/Vinirupchandani/final-project  
 
-**Executive summary (for graders):** Wandr is a small web app that turns a traveler’s quiz answers plus “imported” posts (captions, places, vibes) into a transparent, scored day-by-day itinerary. It is aimed at people who discover trips through short-form video and blogs but want a structured plan without losing why each stop was picked. Generative AI is used optionally to extract place and vibe hints from pasted text; scoring and itinerary assembly are explicit in code so results stay inspectable. This repo contains **application code only**—submit the written report and slide deck through the course LMS as instructed.
+**Executive summary (for graders):** Wandr is a small web app that turns a traveler’s quiz answers plus “imported” posts (captions, places, vibes) into a transparent, scored day-by-day itinerary. It is aimed at people who discover trips through short-form video and blogs but want a structured plan without losing why each stop was picked. **To run the app as designed you need both OpenAI and Google Places API keys** (see Setup): OpenAI powers pasted-caption extraction, embeddings, and recommendation reranking; Google Places powers live place search and fetching real venues for non–hard-coded cities. Scoring and itinerary assembly stay explicit in code. This repo contains **application code only**—submit the written report and slide deck through the course LMS as instructed.
 
 ## Stack
 - Next.js (App Router) + React + Tailwind
 - Next.js API routes backend
 - Supabase Postgres
-- OpenAI API (optional AI extraction)
+- **OpenAI API** (required): caption parsing, embeddings, AI reranking
+- **Google Places API (Places API New)** (required): text search, place details, candidate venues for recommendations outside the bundled Dubai demo set
 
 ## Features
 - Landing page with clear product proposition
@@ -25,8 +26,9 @@
 
 ## Prerequisites
 - Node.js 20+ recommended  
-- A Supabase project (Postgres) if you use persistence features  
-- Optional: OpenAI API key for caption extraction  
+- **OpenAI** account and API key — [platform.openai.com](https://platform.openai.com/)  
+- **Google Cloud** project with **Places API (New)** enabled and an API key — [Google Places API](https://developers.google.com/maps/documentation/places/web-service/op-overview)  
+- A **Supabase** project (Postgres) if you use persistence features  
 
 ## Setup
 1. Install dependencies:
@@ -37,12 +39,24 @@ npm install
 ```bash
 cp .env.example .env.local
 ```
-3. Fill `.env.local` (never commit this file or put keys in your report PDF):
+3. Fill `.env.local` (never commit this file or put keys in your report PDF).
+
+**Required for the full demo**
+
+| Variable | Purpose |
+| -------- | ------- |
+| `OPENAI_API_KEY` | Paste-caption extraction (`/api/parse-content`), embedding-based matching, AI reranking of recommendations |
+| `GOOGLE_PLACES_API_KEY` | Place search autocomplete, place details, and **live** recommendation candidates for cities other than the built-in Dubai landmark set |
+
+**Also set (database)**
+
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `OPENAI_API_KEY` (optional)
-- `FOURSQUARE_API_KEY` (optional future enrichment)
+
+**Optional**
+
+- `FOURSQUARE_API_KEY` — reserved for future enrichment; not required to run the current app
 
 ## Database setup (Supabase hosted)
 1. Create a Supabase project.
@@ -69,7 +83,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Deployment (Vercel)
 1. Push to GitHub.
 2. Import repo into Vercel.
-3. Add all `.env.local` variables in Vercel project settings.
+3. Add all `.env.local` variables in Vercel project settings (including **OpenAI** and **Google Places**).
 4. Deploy.
 
 ## Recommendation formula
