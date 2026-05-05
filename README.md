@@ -2,7 +2,7 @@
 
 **Course:** [Your course name and term]  
 **Team / author:** [Names]  
-**Repository:** https://github.com/Vinirupchandani/wandr  
+**Repository:** https://github.com/Vinirupchandani/final-project  
 
 **Executive summary (for graders):** Wandr is a small web app that turns a traveler’s quiz answers plus “imported” posts (captions, places, vibes) into a transparent, scored day-by-day itinerary. It is aimed at people who discover trips through short-form video and blogs but want a structured plan without losing why each stop was picked. Generative AI is used optionally to extract place and vibe hints from pasted text; scoring and itinerary assembly are explicit in code so results stay inspectable. This repo contains **application code only**—submit the written report and slide deck through the course LMS as instructed.
 
