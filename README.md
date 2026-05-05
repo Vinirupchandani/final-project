@@ -9,7 +9,6 @@
 ## Stack
 - Next.js (App Router) + React + Tailwind
 - Next.js API routes backend
-- Supabase Postgres
 - **OpenAI API** (required): caption parsing, embeddings, AI reranking
 - **Google Places API (Places API New)** (required): text search, place details, candidate venues for recommendations outside the bundled Dubai demo set
 
@@ -28,7 +27,6 @@
 - Node.js 20+ recommended  
 - **OpenAI** account and API key — [platform.openai.com](https://platform.openai.com/)  
 - **Google Cloud** project with **Places API (New)** enabled and an API key — [Google Places API](https://developers.google.com/maps/documentation/places/web-service/op-overview)  
-- A **Supabase** project (Postgres) if you use persistence features  
 
 ## Setup
 1. Install dependencies:
@@ -48,23 +46,7 @@ cp .env.example .env.local
 | `OPENAI_API_KEY` | Paste-caption extraction (`/api/parse-content`), embedding-based matching, AI reranking of recommendations |
 | `GOOGLE_PLACES_API_KEY` | Place search autocomplete, place details, and **live** recommendation candidates for cities other than the built-in Dubai landmark set |
 
-**Also set (database)**
-
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY`
-
-**Optional**
-
-- `FOURSQUARE_API_KEY` — reserved for future enrichment; not required to run the current app
-
-## Database setup (Supabase hosted)
-1. Create a Supabase project.
-2. Open SQL Editor and run `supabase/schema.sql`.
-3. Seed places:
-```bash
-npx tsx supabase/seed.ts
-```
+Trip state, quiz answers, and imports for this demo live **in the browser / in-memory** on the server. The repo still contains optional Supabase SQL and client helpers if you want Postgres later—you do **not** need Supabase or Foursquare to run or grade this project.
 
 ## Local run
 ```bash
@@ -78,12 +60,12 @@ Open [http://localhost:3000](http://localhost:3000).
 3. Generate itinerary.
 4. Review taste profile and itinerary rationale.
 5. Submit feedback on stops.
-6. Open `/admin` and verify aggregate metrics.
+6. Open `/admin` and verify aggregate metrics (uses in-memory trip store when no database is configured).
 
 ## Deployment (Vercel)
 1. Push to GitHub.
 2. Import repo into Vercel.
-3. Add all `.env.local` variables in Vercel project settings (including **OpenAI** and **Google Places**).
+3. Add **`OPENAI_API_KEY`** and **`GOOGLE_PLACES_API_KEY`** in Vercel project settings.
 4. Deploy.
 
 ## Recommendation formula
