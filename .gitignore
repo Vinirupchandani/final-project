@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/.next-local/
 /out/
 
 # production
@@ -32,6 +33,17 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# Course artifacts: submit report & slides via LMS, not the code repo
+/*.pdf
+
+# Local-only slide tooling (not required to run the app)
+/scripts/
+
+# Local IDE / agent instructions (not part of project deliverables)
+AGENTS.md
+CLAUDE.md
 
 # vercel
 .vercel
