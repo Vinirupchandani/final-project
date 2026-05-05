@@ -17,7 +17,7 @@ import {
   getPrimaryPreferenceForRecommendation,
 } from "@/lib/recommendation-categories";
 
-// TODO: Replace static CSV ingestion with live Foursquare/Places API signals.
+// Static CSV simulates friend/landmark preferences; live Places candidates used for other cities in /api/recommend.
 // TODO: Add graph-based friend relationships once real friend data exists.
 // TODO: Swap hand-built vectors for learned embeddings when enough interactions are collected.
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { AppTabs } from "@/components/AppTabs";
 import { BackButton } from "@/components/BackButton";
 import { DestinationDetails } from "@/lib/types";
@@ -17,7 +17,7 @@ import {
 
 type ComparisonChoice = "here" | "there";
 
-export default function DestinationPage() {
+function DestinationPageContent() {
   const params = useParams<{ landmark: string }>();
   const search = useSearchParams();
   const tripId = search.get("tripId");
@@ -411,5 +411,19 @@ export default function DestinationPage() {
         )}
       </section>
     </main>
+  );
+}
+
+export default function DestinationPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto min-h-screen max-w-4xl bg-[#f6f3ee] p-6">
+          <p className="text-[#5c5348]">Loading destination…</p>
+        </main>
+      }
+    >
+      <DestinationPageContent />
+    </Suspense>
   );
 }

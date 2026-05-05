@@ -4,7 +4,7 @@
 **Team / author:** [Names]  
 **Repository:** https://github.com/Vinirupchandani/final-project  
 
-**Executive summary (for graders):** Wandr is a small web app that turns a traveler’s quiz answers plus “imported” posts (captions, places, vibes) into a transparent, scored day-by-day itinerary. It is aimed at people who discover trips through short-form video and blogs but want a structured plan without losing why each stop was picked. **To run the app as designed you need both OpenAI and Google Places API keys** (see Setup): OpenAI powers pasted-caption extraction, embeddings, and recommendation reranking; Google Places powers live place search and fetching real venues for non–hard-coded cities. Scoring and itinerary assembly stay explicit in code. This repo contains **application code only**—submit the written report and slide deck through the course LMS as instructed.
+**Executive summary (for graders):** Wandr is a small web app that turns a traveler’s quiz answers plus “imported” posts (captions, places, vibes) into a transparent, scored day-by-day itinerary. It is aimed at people who discover trips through short-form video and blogs but want a structured plan without losing why each stop was picked. **To run the app as designed you need both OpenAI and Google Places API keys** (see Setup): OpenAI powers pasted-caption extraction, embeddings, and recommendation reranking; Google Places powers live place search and fetching real venues for non–hard-coded cities. **Social-style “friend” preferences are simulated** by the bundled CSV in `data/` (see **`DATASET.md`**)—not scraped from real platforms. For a concise dependency audit see **`docs/REQUIREMENTS.md`**. This repo contains **application code only**—submit the written report and slide deck through the course LMS as instructed.
 
 ## Stack
 - Next.js (App Router) + React + Tailwind
@@ -46,7 +46,9 @@ cp .env.example .env.local
 | `OPENAI_API_KEY` | Paste-caption extraction (`/api/parse-content`), embedding-based matching, AI reranking of recommendations |
 | `GOOGLE_PLACES_API_KEY` | Place search autocomplete, place details, and **live** recommendation candidates for cities other than the built-in Dubai landmark set |
 
-Trip state, quiz answers, and imports for this demo live **in the browser / in-memory** on the server. The repo still contains optional Supabase SQL and client helpers if you want Postgres later—you do **not** need Supabase or Foursquare to run or grade this project.
+**Bundled simulated dataset (required for the Dubai / “friends” story):** `data/dubai_travel_beli_dataset.csv` — documented in **`DATASET.md`**. Optional override: `BELI_DATASET_PATH` in `.env.local` (absolute path to a CSV with the same columns).
+
+Trip state, quiz answers, and imports for this demo live **in the browser / in-memory** on the server. The repo still contains optional Supabase SQL and client helpers if you want Postgres later—you do **not** need Supabase to run or grade this project.
 
 ## Local run
 ```bash

@@ -1,14 +1,14 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { AppTabs } from "@/components/AppTabs";
 import { BackButton } from "@/components/BackButton";
 import { Itinerary } from "@/components/Itinerary";
 import { buildLearnedPreferenceVector, getActiveUserName, loadUserVisits, topLearnedSeeds } from "@/lib/user-profile";
 import { ItineraryItem, OnboardingQuizInput } from "@/lib/types";
 
-export default function PlanPage() {
+function PlanContent() {
   const params = useSearchParams();
   const tripId = params.get("tripId") || undefined;
   const [days, setDays] = useState<Array<{ day: number; places: ItineraryItem[] }>>([]);
@@ -47,5 +47,19 @@ export default function PlanPage() {
       <h1 className="mb-4 text-3xl font-black text-[#1f1a15]">Your day-by-day itinerary for {city}</h1>
       <Itinerary days={days} />
     </main>
+  );
+}
+
+export default function PlanPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto min-h-screen max-w-4xl bg-[#f6f3ee] p-6">
+          <p className="text-[#5c5348]">Loading itinerary…</p>
+        </main>
+      }
+    >
+      <PlanContent />
+    </Suspense>
   );
 }

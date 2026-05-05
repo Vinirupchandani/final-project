@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { DatasetRow } from "@/lib/types";
 
-const DEFAULT_DATASET_PATH = "/Users/vinirupchandani/Downloads/dubai_travel_beli_dataset.csv";
+const BUNDLED_DATASET = "dubai_travel_beli_dataset.csv";
 
 let cachedRows: DatasetRow[] | null = null;
 
@@ -43,19 +43,33 @@ function normalizeRating(value: number): number {
   return Math.max(1, Math.min(5, value));
 }
 
-function resolveDatasetPath(): string {
-  const envPath = process.env.BELI_DATASET_PATH;
+function resolveDatasetPath(): string | null {
+  const envPath = process.env.BELI_DATASET_PATH?.trim();
   if (envPath && existsSync(envPath)) return envPath;
-  if (existsSync(DEFAULT_DATASET_PATH)) return DEFAULT_DATASET_PATH;
 
-  const localPath = join(process.cwd(), "dubai_travel_beli_dataset.csv");
-  return localPath;
+  const bundled = join(/* turbopackIgnore: true */ process.cwd(), "data", BUNDLED_DATASET);
+  if (existsSync(bundled)) return bundled;
+
+  const legacyRoot = join(/* turbopackIgnore: true */ process.cwd(), BUNDLED_DATASET);
+  if (existsSync(legacyRoot)) return legacyRoot;
+
+  return null;
 }
 
 export function loadDatasetRows(): DatasetRow[] {
   if (cachedRows) return cachedRows;
 
   const csvPath = resolveDatasetPath();
+  if (!csvPath) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "[wandr] No dataset CSV found. Expected data/dubai_travel_beli_dataset.csv or BELI_DATASET_PATH. Friend-based scoring will be empty."
+      );
+    }
+    cachedRows = [];
+    return cachedRows;
+  }
+
   const raw = readFileSync(csvPath, "utf8");
   const lines = raw.split(/\r?\n/).filter(Boolean);
 
